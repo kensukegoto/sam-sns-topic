@@ -1,25 +1,38 @@
-var aws = require('aws-sdk');
+const aws = require('aws-sdk');
 
-var sns = new aws.SNS({
-   apiVersion: '2010-03-31',
-   region: 'ap-northeast-1'
+const sns = new aws.SNS({
+  apiVersion: '2010-03-31',
+  region: 'ap-northeast-1'
 });
 
-exports.lambdaHandler = async function(event, context) {
+exports.lambdaHandler = async function(event, context, callback) {
 
-  var params = {
+  const params = {
     Message: 'hello,world', /* required */
     TopicArn: 'arn:aws:sns:ap-northeast-1:395218667042:MyTopic'
-    // TopicArn: 'arn:aws:sns:ap-northeast-1:395218667042:MyTopic:6d2ddb61-f604-462d-8566-8835b3729812'
   };
 
-  await sns.publish(params).promise().then(
-    function(data) {
-      console.log(`Message ${params.Message} send sent to the topic ${params.TopicArn}`);
-      console.log("MessageID is " + data.MessageId);
-    }).catch(
-      function(err) {
-      console.error(err, err.stack);
+  await sns.publish(params)
+    .promise()
+    .then((data) => {
+
+      callback(null,{
+        statusCode: 200,
+        body: JSON.stringify({
+          success: true,
+          messageID : data.MessageId,
+          message : params.Message
+         })
+      })
+
+    }).catch(err => {
+      console.error(err);
+      callback(null,{
+        statusCode: 500,
+        body: JSON.stringify({
+          success: false
+        })
+      })
     });
 
 };
