@@ -11,7 +11,7 @@ exports.lambdaHandler = async function(event, context, callback) {
   const message = dataPosted.message || "none";
 
   const params = {
-    Message: message,
+    Message: `【本文】\n${message}`,
     TopicArn: 'arn:aws:sns:ap-northeast-1:395218667042:MyTopic'
   };
 
