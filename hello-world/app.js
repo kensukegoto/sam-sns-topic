@@ -7,8 +7,11 @@ const sns = new aws.SNS({
 
 exports.lambdaHandler = async function(event, context, callback) {
 
+  const dataPosted = JSON.parse(event.body);
+  const message = dataPosted.message || "none";
+
   const params = {
-    Message: 'hello,world', /* required */
+    Message: message,
     TopicArn: 'arn:aws:sns:ap-northeast-1:395218667042:MyTopic'
   };
 
