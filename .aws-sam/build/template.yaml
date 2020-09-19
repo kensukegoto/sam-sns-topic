@@ -9,34 +9,34 @@ Globals:
   Function:
     Timeout: 3
 Resources:
-  HelloWorldFunction:
+  RecieveFormDataFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: HelloWorldFunction
+      CodeUri: RecieveFormDataFunction
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Policies:
       - AmazonSNSFullAccess
       Events:
-        HelloWorld:
+        SendFormData:
           Type: Api
           Properties:
-            Path: /hello
+            Path: /send
             Method: post
 Outputs:
-  HelloWorldApi:
+  RecieveFormDataApi:
     Description: API Gateway endpoint URL for Prod stage for Hello World function
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
-  HelloWorldFunction:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/send/
+  RecieveFormDataFunction:
     Description: Hello World Lambda Function ARN
     Value:
       Fn::GetAtt:
       - HelloWorldFunction
       - Arn
-  HelloWorldFunctionIamRole:
+  RecieveFormDataFunctionIamRole:
     Description: Implicit IAM Role created for Hello World function
     Value:
       Fn::GetAtt:
-      - HelloWorldFunctionRole
+      - RecieveFormDataFunction
       - Arn
